@@ -94,7 +94,7 @@
     gap: 30px;
   }
   
-  #result-poster {
+  .result-poster {
     padding: 15px;
     font-size: 16px;
     color:#8e0e00;
@@ -104,7 +104,7 @@
     cursor: pointer;
   }
   
-  #result-poster:hover {
+  .result-poster:hover {
     scale: 1.05;
     transition: scale 0.5s linear;
   }

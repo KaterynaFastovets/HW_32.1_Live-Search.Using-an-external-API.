@@ -2,6 +2,7 @@ const input = document.querySelector(".input");
 const buttonSearch = document.querySelector(".search");
 const buttonClear = document.querySelector(".clear");
 const containerResult = document.querySelector(".result");
+const apiKey = "d55c5ee9";
 
 input.addEventListener("input", (event) => {
   const value = event.target.value;
@@ -10,7 +11,7 @@ input.addEventListener("input", (event) => {
 
 async function getValue(showSearch) {
   const resultSearch = containerResult;
-  const url = `http://www.omdbapi.com/?apikey=d55c5ee9&s=${input.value}`;
+  const url = `http://www.omdbapi.com/?apikey=${apiKey}&s=${input.value}`;
 
   if (showSearch.length) {
     let response = await fetch(url);
@@ -20,9 +21,9 @@ async function getValue(showSearch) {
 
     for (i = 0; i < 9; i++) {
       let div = document.createElement("div");
-      div.id = "result-poster";
-      div.innerHTML =
-        div.innerHTML +
+      div.classList.add("result-poster");
+      div.innerHTML +=
+       
         `<img src = "${movie.Search[i].Poster}">` +
         `<p>Title: ${movie.Search[i].Title}</p>` +
         `<p>Year: ${movie.Search[i].Year}</p>`;
@@ -36,8 +37,7 @@ async function getValue(showSearch) {
 
 buttonSearch.onclick = function () {
   const resultSearch = containerResult;
-  resultSearch.innerHTML = resultSearch.append(div);
-  input.value = getValue(value);
+  resultSearch.innerHTML += resultSearch.innerHTML;
 };
 
 buttonClear.onclick = function () {
