@@ -11,27 +11,25 @@ input.addEventListener("input", (event) => {
 
 async function getValue(showSearch) {
   const resultSearch = containerResult;
-  const url = `http://www.omdbapi.com/?apikey=${apiKey}&s=${input.value}`;
+  const url = `https://www.omdbapi.com/?apikey=${apiKey}&s=${input.value}`;
 
   if (showSearch.length) {
     let response = await fetch(url);
     let data = await response.json();
-    let movie = Object(data);
     resultSearch.innerHTML = "";
 
-    for (i = 0; i < 9; i++) {
+    for (i = 0; i < url.length; i++) {
       let div = document.createElement("div");
       div.classList.add("result-poster");
       div.innerHTML +=
-       
-        `<img src = "${movie.Search[i].Poster}">` +
-        `<p>Title: ${movie.Search[i].Title}</p>` +
-        `<p>Year: ${movie.Search[i].Year}</p>`;
+        `<img src = "${data.Search[i].Poster}">` +
+        `<p>Title: ${data.Search[i].Title}</p>` +
+        `<p>Year: ${data.Search[i].Year}</p>`;
       resultSearch.append(div);
     }
-  }
-  if (!response.ok) {
-    throw new Error("Error" + response.status);
+    if (!response.ok) {
+      throw new Error("Error" + response.status);
+    }
   }
 }
 
@@ -45,11 +43,3 @@ buttonClear.onclick = function () {
   resultSearch.innerHTML = "";
   input.value = "";
 };
-
-// input.addEventListener("keypress", function (event) {
-
-//   let key = event.which || event.keyCode;
-//   if (key === 13) {
-//     buttonSearch.click();
-//   }
-// });
