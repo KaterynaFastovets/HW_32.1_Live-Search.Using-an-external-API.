@@ -1,5 +1,4 @@
 const input = document.querySelector(".input");
-const buttonSearch = document.querySelector(".search");
 const buttonClear = document.querySelector(".clear");
 const containerResult = document.querySelector(".result");
 const apiKey = "d55c5ee9";
@@ -11,32 +10,36 @@ input.addEventListener("input", (event) => {
 
 async function getValue(showSearch) {
   const resultSearch = containerResult;
-  const url = `https://www.omdbapi.com/?apikey=${apiKey}&s=${input.value}`;
+  const url = `https://www.omdbapi.com/?apikey=${apiKey}&s=${showSearch}`;
 
-  if (showSearch.length) {
-    let response = await fetch(url);
-    let data = await response.json();
-    resultSearch.innerHTML = "";
+  resultSearch.innerHTML = "";
 
-    for (i = 0; i < url.length; i++) {
-      let div = document.createElement("div");
-      div.classList.add("result-poster");
-      div.innerHTML +=
-        `<img src = "${data.Search[i].Poster}">` +
-        `<p>Title: ${data.Search[i].Title}</p>` +
-        `<p>Year: ${data.Search[i].Year}</p>`;
-      resultSearch.append(div);
-    }
-    if (!response.ok) {
-      throw new Error("Error" + response.status);
+  if (showSearch.length > 0) {
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+
+      if (response.ok && data.Response === "True") {
+        data.Search.forEach((movie) => {
+         
+          const div = document.createElement("div");
+          div.classList.add("result-poster");
+          div.innerHTML = `
+            <img src="${movie.Poster}" alt="${movie.Title} Poster">
+            <p><strong>Title:</strong> ${movie.Title}</p>
+            <p><strong>Year:</strong> ${movie.Year}</p>
+          `;
+          resultSearch.appendChild(div);
+        });
+      } else {
+        resultSearch.innerHTML = `<p><strong>No results found for "${showSearch}".<strong/></p>`;
+      }
+    } catch (error) {
+      resultSearch.innerHTML = `<p><strong>Error fetching data. Please try again later.</strong></p>`;
+      console.error("Error fetching data from API:", error);
     }
   }
 }
-
-buttonSearch.onclick = function () {
-  const resultSearch = containerResult;
-  resultSearch.innerHTML += resultSearch.innerHTML;
-};
 
 buttonClear.onclick = function () {
   const resultSearch = containerResult;
